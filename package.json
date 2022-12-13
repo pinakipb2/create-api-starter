@@ -1,0 +1,44 @@
+{
+  "name": "create-api-starter",
+  "version": "2.0.2",
+  "description": "API Starter Created by @pinakipb2",
+  "main": "src/index.js",
+  "bin": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "pinakipb2",
+    "express",
+    "api",
+    "server"
+  ],
+  "author": "Pinaki Bhattacharjee <pinakipb2@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "await-spawn": "^4.0.2",
+    "chalk": "^4.1.2",
+    "inquirer": "^9.1.4",
+    "prompts": "^2.4.2",
+    "validate-npm-package-name": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinakipb2/create-api-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pinakipb2/create-api-starter/issues",
+    "email": "pinakipb2@gmail.com"
+  },
+  "publishConfig": {
+    "access": "public",
+    "branches": [
+      "main"
+    ]
+  },
+  "homepage": "https://github.com/pinakipb2/create-api-starter#readme"
+}
