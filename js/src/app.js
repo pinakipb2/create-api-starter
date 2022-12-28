@@ -1,17 +1,17 @@
-import cors from 'cors';
-import express from 'express';
-import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
-import createError from 'http-errors';
-import morgan from 'morgan';
-import path from 'path';
-import favicon from 'serve-favicon';
-import xss from 'xss-clean';
+import cors from "cors";
+import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import createError from "http-errors";
+import morgan from "morgan";
+import path from "path";
+import favicon from "serve-favicon";
+import xss from "xss-clean";
 
-import './v1/config/env.config';
+import "./v1/config/env.config";
 
-import { defaultMiddleware } from './v1/middlewares';
-import { defaultRoutes } from './v1/routes';
+import { defaultMiddleware } from "./v1/middlewares";
+import { defaultRoutes } from "./v1/routes";
 
 // RateLimitter
 const limiter = rateLimit({
@@ -20,8 +20,8 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: {
-    status: 429,
-    message: 'Too Many Requests',
+    status: createError.TooManyRequests().status,
+    message: createError.TooManyRequests().message,
   },
 });
 
@@ -36,25 +36,25 @@ global.appRoot = path.resolve(__dirname);
 
 // Middlewares
 app.use(helmet());
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 app.use(limiter);
 app.use(xss());
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(morgan('dev'));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(morgan("dev"));
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(defaultMiddleware);
 
 // Welcome Route
-app.all('/', async (req, res, next) => {
-  res.send({ message: 'API is Up and Running 😎🚀' });
+app.all("/", (req, res, next) => {
+  res.send({ message: "API is Up and Running 😎🚀" });
 });
 
-const apiVersion = 'v1';
+const apiVersion = "v1";
 
 // Routes
-app.use(`/api/${apiVersion}/default`, defaultRoutes);
+app.use(`/${apiVersion}/default`, defaultRoutes);
 
 // 404 Handler
 app.use((req, res, next) => {

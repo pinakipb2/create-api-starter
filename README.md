@@ -20,6 +20,8 @@
 REST API Starter w/ Express and JS/TS
 </p>
 
+## Getting Started
+
 ```
 npx create-api-starter@latest
 ```

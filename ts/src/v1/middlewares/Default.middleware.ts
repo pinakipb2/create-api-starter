@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import createError from 'http-errors';
+import { NextFunction, Request, Response } from "express";
+import createError from "http-errors";
 
-const defaultMiddleware = async (_req: Request, _res: Response, next: NextFunction): Promise<any> => {
+const defaultMiddleware = async (_req: Request, _res: Response, next: NextFunction): Promise<void> => {
   try {
     next();
   } catch (err) {

@@ -1,9 +1,9 @@
-import createError from 'http-errors';
+import createError from "http-errors";
 
 const defaultController = {
   async greet(req, res, next) {
     try {
-      res.json({ message: 'Hello World!' });
+      res.json({ message: "Hello World!" });
     } catch (err) {
       return next(createError.InternalServerError());
     }

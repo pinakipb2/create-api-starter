@@ -1,4 +1,4 @@
-import createError from 'http-errors';
+import createError from "http-errors";
 
 const defaultMiddleware = async (req, res, next) => {
   try {

@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
-const spawn = require('await-spawn');
-const chalk = require('chalk');
-const fs = require('fs');
-const path = require('path');
-const prompts = require('prompts');
-const validate = require('validate-npm-package-name');
+const spawn = require("await-spawn");
+const chalk = require("chalk");
+const fs = require("fs");
+const path = require("path");
+const prompts = require("prompts");
+const validate = require("validate-npm-package-name");
 
 /**
  * User inputs Ctrl+C or Ctrl+D to exit the prompt. We should close the
  * process and not write to the file system.
  */
 const onCancel = () => {
-  console.log(chalk.red('Exiting !'));
+  console.log(chalk.red("Exiting !"));
   process.exit(1);
 };
 
@@ -22,17 +22,17 @@ let lang;
 (async () => {
   const quesOne = await prompts(
     {
-      type: 'text',
-      name: 'name',
-      message: 'What is your project named?',
-      initial: 'my-app',
+      type: "text",
+      name: "name",
+      message: "What is your project named?",
+      initial: "my-app",
       validate: (value) => {
-        if (value === '.') return true;
+        if (value === ".") return true;
         const folder = path.join(process.cwd(), value);
         if (!fs.existsSync(folder)) {
           fs.mkdirSync(folder);
         } else {
-          return 'Given Directory already exists !';
+          return "Given Directory already exists !";
         }
         const validation = validate(value);
         let errMsg;
@@ -50,37 +50,37 @@ let lang;
   );
   appName = quesOne.name;
 
-  const styledTypeScript = chalk.hex('#007acc')('TypeScript');
+  const styledTypeScript = chalk.hex("#007acc")("TypeScript");
 
   const quesTwo = await prompts(
     {
-      type: 'toggle',
-      name: 'typescript',
+      type: "toggle",
+      name: "typescript",
       message: `Would you like to use ${styledTypeScript} with this project?`,
       initial: true,
-      active: 'Yes',
-      inactive: 'No',
+      active: "Yes",
+      inactive: "No",
     },
     {
       onCancel,
     }
   );
-  lang = quesTwo.typescript ? 'ts' : 'js';
+  lang = quesTwo.typescript ? "ts" : "js";
 
   console.log();
 
-  const basePath = path.resolve(__dirname, '../', lang);
+  const basePath = path.resolve(__dirname, "../", lang);
   const appPath = path.join(process.cwd(), appName);
 
-  console.log('Creating a new API Starter in ' + chalk.green(appPath) + '.');
+  console.log("Creating a new API Starter in " + chalk.green(appPath) + ".");
 
   const addPackageJSON = () => {
-    const fileName = 'package.json';
-    let pjson = fs.readFileSync(path.join(basePath, fileName), 'utf8');
+    const fileName = "package.json";
+    let pjson = fs.readFileSync(path.join(basePath, fileName), "utf8");
     pjson = JSON.parse(pjson);
-    pjson.name = appName;
+    pjson.name = appName === "." ? pjson.name : appName;
     const jsonContent = JSON.stringify(pjson, null, 2);
-    fs.writeFile(path.join(appPath, fileName), jsonContent, 'utf8', function (err) {
+    fs.writeFile(path.join(appPath, fileName), jsonContent, "utf8", function (err) {
       if (err) {
         console.log(chalk.red(`Error in creating ${fileName} !`));
         process.exit(1);
@@ -90,7 +90,7 @@ let lang;
 
   const addAdditionalFiles = () => {
     fs.readdirSync(basePath).forEach((file) => {
-      if (!fs.lstatSync(path.resolve(basePath, file)).isDirectory() && file !== 'package.json' && file !== 'package-lock.json') {
+      if (!fs.lstatSync(path.resolve(basePath, file)).isDirectory() && file !== "package.json" && file !== "package-lock.json") {
         fs.copyFile(path.join(basePath, file), path.join(appPath, file), (err) => {
           if (err) {
             console.log(`Error in creating ${file} !`);
@@ -129,17 +129,17 @@ let lang;
         });
       }
     }
-    copyFolderRecursiveSync(path.join(basePath, 'src'), appPath);
+    copyFolderRecursiveSync(path.join(basePath, "src"), appPath);
   };
 
   const addPackageLockJSON = () => {
-    const fileName = 'package-lock.json';
-    let pjson = fs.readFileSync(path.join(basePath, fileName), 'utf8');
+    const fileName = "package-lock.json";
+    let pjson = fs.readFileSync(path.join(basePath, fileName), "utf8");
     pjson = JSON.parse(pjson);
-    pjson.name = appName;
-    pjson.packages[''].name = appName;
+    pjson.name = appName === "." ? pjson.name : appName;
+    pjson.packages[""].name = appName === "." ? pjson.name : appName;
     const jsonContent = JSON.stringify(pjson, null, 2);
-    fs.writeFile(path.join(appPath, fileName), jsonContent, 'utf8', function (err) {
+    fs.writeFile(path.join(appPath, fileName), jsonContent, "utf8", function (err) {
       if (err) {
         console.log(chalk.red(`Error in creating ${fileName} !`));
         process.exit(1);
@@ -147,11 +147,18 @@ let lang;
     });
   };
 
-  const addDotEnv = () => {
-    const content = 'PORT=5000\nFRONTEND_URL=http://localhost:3000\n';
-    fs.writeFileSync(path.join(appName, '.env'), content, 'utf-8', function (err) {
+  const addDotEnvAndGitignore = () => {
+    const envContent = "PORT=5000\nFRONTEND_URL=http://localhost:3000\n";
+    fs.writeFileSync(path.join(appName, ".env"), envContent, "utf-8", function (err) {
       if (err) {
         console.log(chalk.red(`Error in creating .env !`));
+        process.exit(1);
+      }
+    });
+    const gitignoreContent = "node_modules\n.env*\nbuild\n";
+    fs.writeFileSync(path.join(appName, ".gitignore"), gitignoreContent, "utf-8", function (err) {
+      if (err) {
+        console.log(chalk.red(`Error in creating .gitignore !`));
         process.exit(1);
       }
     });
@@ -160,55 +167,55 @@ let lang;
   addPackageJSON();
   addAdditionalFiles();
   addPackageLockJSON();
-  addDotEnv();
+  addDotEnvAndGitignore();
 
   console.log();
 
   try {
     process.chdir(appName);
-    const ls = await spawn('git', ['init']);
-    process.chdir('../');
-    console.log('Initialized a git repository.');
+    const ls = await spawn("git", ["init"]);
+    process.chdir("../");
+    console.log("Initialized a git repository.");
   } catch (err) {
-    console.log(err);
-    console.error('Error while initializing a git repository');
+    // console.log(err);
+    console.log(chalk.red("Error while initializing a git repository"));
   }
 
   console.log();
 
-  console.log(`${chalk.green('Success!')} Created ${appName} at ${appPath}`);
+  console.log(`${chalk.green("Success!")} Created ${appName} at ${appPath}`);
 
   console.log();
 
-  console.log('Inside that directory, you can run several commands:');
+  console.log("Inside that directory, you can run several commands:");
 
   console.log();
 
   console.log(chalk.cyan(`  npm run dev`));
 
-  console.log('    Starts the development server.');
+  console.log("    Starts the development server.");
 
   console.log();
 
   console.log(chalk.cyan(`  npm run build`));
 
-  console.log('    Builds the app for production.');
+  console.log("    Builds the app for production.");
 
   console.log();
 
   console.log(chalk.cyan(`  npm run start`));
 
-  console.log('    Runs the built app in production mode.');
+  console.log("    Runs the built app in production mode.");
 
   console.log();
 
   console.log();
 
-  console.log('Now run:');
+  console.log("Now run:");
 
   console.log();
 
-  console.log(chalk.cyan('  cd'), appName);
+  console.log(chalk.cyan("  cd"), appName);
 
   console.log(`  ${chalk.cyan(`npm install`)}`);
 
@@ -216,7 +223,7 @@ let lang;
 
   console.log();
 
-  console.log(chalk.white.bgRed.bold(' Created by @pinakipb2 '));
+  console.log(chalk.white.bgRed.bold(" Created by @pinakipb2 "));
 
   console.log();
 })();

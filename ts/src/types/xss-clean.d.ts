@@ -1,4 +1,4 @@
-declare module 'xss-clean' {
+declare module "xss-clean" {
   const value: Function;
 
   export default value;
