@@ -6,7 +6,8 @@
   "bin": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "publish": "npm publish --access=public"
   },
   "keywords": [
     "pinakipb2",
