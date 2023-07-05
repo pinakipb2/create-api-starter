@@ -1,6 +1,6 @@
 {
   "name": "api_starter",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "API Starter Created by @pinakipb2",
   "main": "app.js",
   "scripts": {
