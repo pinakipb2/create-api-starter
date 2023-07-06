@@ -13,7 +13,8 @@
     "pinakipb2",
     "express",
     "api",
-    "server"
+    "server",
+    "create-api-starter"
   ],
   "author": "Pinaki Bhattacharjee <pinakipb2@gmail.com>",
   "license": "MIT",
