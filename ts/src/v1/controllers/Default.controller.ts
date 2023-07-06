@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { type NextFunction, type Request, type Response } from "express";
 import createError from "http-errors";
 
 const defaultController = {
@@ -6,7 +6,7 @@ const defaultController = {
     try {
       res.json({ message: "Hello World!" });
     } catch (err) {
-      return next(createError.InternalServerError());
+      next(createError.InternalServerError());
     }
   },
 };
