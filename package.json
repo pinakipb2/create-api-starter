@@ -1,6 +1,6 @@
 {
   "name": "create-api-starter",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "API Starter Created by @pinakipb2",
   "main": "src/index.js",
   "bin": "src/index.js",
@@ -20,12 +20,11 @@
   "dependencies": {
     "await-spawn": "^4.0.2",
     "chalk": "^4.1.2",
-    "inquirer": "^9.1.4",
     "prompts": "^2.4.2",
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.22"
   },
   "repository": {
     "type": "git",

@@ -6,7 +6,6 @@ import createError from "http-errors";
 import morgan from "morgan";
 import path from "path";
 import favicon from "serve-favicon";
-import xss from "xss-clean";
 
 import "./v1/config/env.config";
 
@@ -38,7 +37,6 @@ global.appRoot = path.resolve(__dirname);
 app.use(helmet());
 app.set("trust proxy", 1);
 app.use(limiter);
-app.use(xss());
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

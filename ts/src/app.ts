@@ -1,12 +1,11 @@
 import cors from "cors";
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
-import createError, { HttpError } from "http-errors";
+import createError, { type HttpError } from "http-errors";
 import morgan from "morgan";
 import path from "path";
 import favicon from "serve-favicon";
-import xss from "xss-clean";
 
 import "./v1/config/env.config";
 
@@ -38,7 +37,6 @@ global.appRoot = path.resolve(__dirname);
 app.use(helmet());
 app.set("trust proxy", 1);
 app.use(limiter);
-app.use(xss());
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
